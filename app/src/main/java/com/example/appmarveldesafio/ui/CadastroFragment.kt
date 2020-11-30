@@ -27,6 +27,9 @@ class CadastroFragment : Fragment() {
         view.tbCadastro.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_cadastroFragment_to_loginFragment)
         }
+        view.btnCad.setOnClickListener {
+            findNavController().navigate(R.id.action_cadastroFragment_to_quadrinhosFragment)
+        }
         return view
     }
 

@@ -27,6 +27,9 @@ class LoginFragment : Fragment() {
         view.tvCreateAcc.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_cadastroFragment)
         }
+        view.btnLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_quadrinhosFragment)
+        }
         return view
     }
 

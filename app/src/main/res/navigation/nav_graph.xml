@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_cadastroFragment"
             app:destination="@id/cadastroFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_quadrinhosFragment"
+            app:destination="@id/quadrinhosFragment" />
     </fragment>
     <fragment
         android:id="@+id/cadastroFragment"
@@ -21,6 +24,18 @@
         tools:layout="@layout/fragment_cadastro" >
         <action
             android:id="@+id/action_cadastroFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_cadastroFragment_to_quadrinhosFragment"
+            app:destination="@id/quadrinhosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/quadrinhosFragment"
+        android:name="com.example.appmarveldesafio.ui.QuadrinhosFragment"
+        android:label="fragment_quadrinhos"
+        tools:layout="@layout/fragment_quadrinhos" >
+        <action
+            android:id="@+id/action_quadrinhosFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 </navigation>
