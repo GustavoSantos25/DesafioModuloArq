@@ -22,7 +22,6 @@ class AdapterQuadrinhos() : RecyclerView.Adapter<AdapterQuadrinhos.ResultViewHol
 
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         var item = listQuadrinhos[position]
-        item.thumbnail.path = item.thumbnail.path.replace("http", "https")
         Glide.with(holder.itemView.context).asBitmap()
                 .load("${item.thumbnail.path}.${item.thumbnail.extension}")
                 .into(holder.ivThumbQuad)
@@ -33,8 +32,10 @@ class AdapterQuadrinhos() : RecyclerView.Adapter<AdapterQuadrinhos.ResultViewHol
 
     fun addList(list: ArrayList<Quadrinho>){
         listQuadrinhos.addAll(list)
+        listQuadrinhos.forEach {
+            it.thumbnail.path = it.thumbnail.path.replace("http", "https")
+        }
         notifyDataSetChanged()
-        Log.i("Adapter", listQuadrinhos[0].thumbnail.path)
     }
 
     class ResultViewHolder(view: View): RecyclerView.ViewHolder(view) {

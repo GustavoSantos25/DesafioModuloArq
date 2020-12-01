@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.example.appmarveldesafio.R
 import kotlinx.android.synthetic.main.fragment_cadastro.view.*
@@ -13,9 +14,13 @@ import kotlinx.android.synthetic.main.fragment_cadastro.view.*
 class CadastroFragment : Fragment() {
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this){
+            findNavController().navigate(R.id.action_cadastroFragment_to_loginFragment)
+        }
     }
 
     override fun onCreateView(

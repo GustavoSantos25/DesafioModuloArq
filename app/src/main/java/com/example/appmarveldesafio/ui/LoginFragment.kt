@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.example.appmarveldesafio.R
 import kotlinx.android.synthetic.main.fragment_login.view.*
@@ -15,7 +16,10 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this){
+            activity?.finish()
+            System.exit(0)
+        }
     }
 
     override fun onCreateView(
