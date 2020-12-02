@@ -37,5 +37,17 @@
         <action
             android:id="@+id/action_quadrinhosFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_quadrinhosFragment_to_detailQuadrinhoFragment"
+            app:destination="@id/detailQuadrinhoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailQuadrinhoFragment"
+        android:name="com.example.appmarveldesafio.ui.DetailQuadrinhoFragment"
+        android:label="fragment_detail_quadrinho"
+        tools:layout="@layout/fragment_detail_quadrinho" >
+        <action
+            android:id="@+id/action_detailQuadrinhoFragment_to_quadrinhosFragment"
+            app:destination="@id/quadrinhosFragment" />
     </fragment>
 </navigation>

@@ -12,7 +12,7 @@ import com.example.appmarveldesafio.R
 import com.example.appmarveldesafio.entities.Quadrinho
 import kotlinx.android.synthetic.main.item_quadrinho.view.*
 
-class AdapterQuadrinhos() : RecyclerView.Adapter<AdapterQuadrinhos.ResultViewHolder>() {
+class AdapterQuadrinhos(val listener : OnClickQuadrinhoListener) : RecyclerView.Adapter<AdapterQuadrinhos.ResultViewHolder>() {
     var listQuadrinhos = ArrayList<Quadrinho>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
@@ -33,13 +33,33 @@ class AdapterQuadrinhos() : RecyclerView.Adapter<AdapterQuadrinhos.ResultViewHol
     fun addList(list: ArrayList<Quadrinho>){
         listQuadrinhos.addAll(list)
         listQuadrinhos.forEach {
+            when(it.description) {
+                null -> it.description = "NO DESCRIPTION"
+            }
             it.thumbnail.path = it.thumbnail.path.replace("http", "https")
+            it.images.forEach{
+                it.path = it.path.replace("http", "https")
+            }
         }
         notifyDataSetChanged()
     }
 
-    class ResultViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    interface OnClickQuadrinhoListener{
+        fun onClickQuadrinho(position: Int)
+    }
+
+    inner class ResultViewHolder(view: View): RecyclerView.ViewHolder(view), View.OnClickListener {
         var ivThumbQuad: ImageView = view.ivThumbQuad
         var tvIssueNumber : TextView = view.tvIssueNumber
+
+        init{
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION)
+                listener.onClickQuadrinho(position)
+        }
     }
 }
