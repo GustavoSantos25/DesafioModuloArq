@@ -13,4 +13,5 @@
     <color name="fontLogin">#1F2D3D</color>
     <color name="grey1">#47525E</color>
     <color name="grey2">#343F4B</color>
+    <color name="transparente">#00000000</color>
 </resources>

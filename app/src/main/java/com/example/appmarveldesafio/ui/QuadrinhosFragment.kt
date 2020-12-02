@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appmarveldesafio.R
+import com.example.appmarveldesafio.entities.Quadrinho
 import com.example.appmarveldesafio.service.repository
 import com.example.appmarveldesafio.ui.adapters.AdapterQuadrinhos
 import kotlinx.android.synthetic.main.fragment_quadrinhos.*
@@ -53,6 +54,7 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_quadrinhos, container, false)
 
+
         viewModel.popListQuadrinhos()
         viewModel.listResults.observe(viewLifecycleOwner, {
             adapterQuadrinhos.addList(it.data.results)
@@ -68,19 +70,9 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
     }
 
     override fun onClickQuadrinho(position: Int) {
-        val imageCapa : String = when(viewModel.listResults.value?.data!!.results[position].images.size > 1){
-            false -> viewModel.listResults.value?.data!!.results[position].thumbnail.path + "." + viewModel.listResults.value?.data!!.results[position].thumbnail.extension
-            true -> viewModel.listResults.value?.data!!.results[position].images[1].path + "." + viewModel.listResults.value?.data!!.results[position].images[1].extension
-        }
+        val hq : Quadrinho = viewModel.listResults.value?.data!!.results[position]
+        val bundle = bundleOf(Pair("hq", hq))
 
-        val bundle = bundleOf(Pair("title", viewModel.listResults.value?.data!!.results[position].title),
-            Pair("thumbnail", viewModel.listResults.value?.data!!.results[position].thumbnail.path + "." + viewModel.listResults.value?.data!!.results[position].thumbnail.extension),
-            Pair("desc", viewModel.listResults.value?.data!!.results[position].description),
-            Pair("pages", viewModel.listResults.value?.data!!.results[position].pageCount.toString()),
-            Pair("price", "$"+viewModel.listResults.value?.data!!.results[position].prices[0].price.toString()),
-                Pair("date", viewModel.listResults.value?.data!!.results[position].dates[0].date),
-            Pair("imageCapa", imageCapa)
-        )
         findNavController().navigate(R.id.action_quadrinhosFragment_to_detailQuadrinhoFragment, bundle)
     }
 

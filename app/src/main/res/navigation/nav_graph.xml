@@ -49,5 +49,17 @@
         <action
             android:id="@+id/action_detailQuadrinhoFragment_to_quadrinhosFragment"
             app:destination="@id/quadrinhosFragment" />
+        <action
+            android:id="@+id/action_detailQuadrinhoFragment_to_capaHQFragment"
+            app:destination="@id/capaHQFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/capaHQFragment"
+        android:name="com.example.appmarveldesafio.ui.CapaHQFragment"
+        android:label="fragment_capa_h_q"
+        tools:layout="@layout/fragment_capa_h_q" >
+        <action
+            android:id="@+id/action_capaHQFragment_to_detailQuadrinhoFragment"
+            app:destination="@id/detailQuadrinhoFragment" />
     </fragment>
 </navigation>
