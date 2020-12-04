@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.appmarveldesafio.R
+import com.example.appmarveldesafio.entities.Images
 import com.example.appmarveldesafio.entities.Quadrinho
 import kotlinx.android.synthetic.main.item_quadrinho.view.*
 
@@ -32,15 +33,6 @@ class AdapterQuadrinhos(val listener : OnClickQuadrinhoListener) : RecyclerView.
 
     fun addList(list: ArrayList<Quadrinho>){
         listQuadrinhos.addAll(list)
-        listQuadrinhos.forEach {
-            when(it.description) {
-                null -> it.description = "NO DESCRIPTION"
-            }
-            it.thumbnail.path = it.thumbnail.path.replace("http", "https")
-            it.images.forEach{
-                it.path = it.path.replace("http", "https")
-            }
-        }
         notifyDataSetChanged()
     }
 

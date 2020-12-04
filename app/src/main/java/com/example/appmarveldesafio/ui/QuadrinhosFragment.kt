@@ -1,5 +1,6 @@
 package com.example.appmarveldesafio.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,14 +25,13 @@ import kotlinx.android.synthetic.main.fragment_quadrinhos.*
 import kotlinx.android.synthetic.main.fragment_quadrinhos.view.*
 
 
-class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListener {
+class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListener{
 
-
-
-    lateinit var adapterQuadrinhos: AdapterQuadrinhos
+    private lateinit var adapterQuadrinhos: AdapterQuadrinhos
     lateinit var gridLayoutManager: GridLayoutManager
+    private var offset = 0
 
-    val viewModel by viewModels<MainViewModel>{
+    private val viewModel by activityViewModels<MainViewModel>{
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return MainViewModel(repository) as T
@@ -47,6 +48,8 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
 
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,11 +57,13 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_quadrinhos, container, false)
 
-
-        viewModel.popListQuadrinhos()
+        when(offset == viewModel.listResults.value!!.data.offset){
+            false -> viewModel.popListQuadrinhos(offset)
+        }
         viewModel.listResults.observe(viewLifecycleOwner, {
             adapterQuadrinhos.addList(it.data.results)
         })
+
         adapterQuadrinhos = AdapterQuadrinhos(this)
         gridLayoutManager = GridLayoutManager(view.context, 3)
         view.rvQuadrinhos.adapter = adapterQuadrinhos
@@ -70,10 +75,8 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
     }
 
     override fun onClickQuadrinho(position: Int) {
-        val hq : Quadrinho = viewModel.listResults.value?.data!!.results[position]
-        val bundle = bundleOf(Pair("hq", hq))
-
-        findNavController().navigate(R.id.action_quadrinhosFragment_to_detailQuadrinhoFragment, bundle)
+        viewModel.updatePositionQuadDetail(position)
+        findNavController().navigate(R.id.action_quadrinhosFragment_to_detailQuadrinhoFragment)
     }
 
 
