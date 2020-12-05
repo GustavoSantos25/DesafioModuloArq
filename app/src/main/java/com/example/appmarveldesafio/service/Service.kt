@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface Repository{
-    @GET("series/454/comics")
+    @GET("characters/1009610/comics")
     suspend fun getComicsRepo(
             @Query("offset")p1: Int,
             @Query("limit")p2: Int,
