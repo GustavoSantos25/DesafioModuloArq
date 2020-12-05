@@ -17,12 +17,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.appmarveldesafio.R
 import com.example.appmarveldesafio.entities.Quadrinho
 import com.example.appmarveldesafio.service.repository
 import com.example.appmarveldesafio.ui.adapters.AdapterQuadrinhos
 import kotlinx.android.synthetic.main.fragment_quadrinhos.*
 import kotlinx.android.synthetic.main.fragment_quadrinhos.view.*
+import kotlin.properties.Delegates
 
 
 class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListener{
@@ -30,6 +32,7 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
     private lateinit var adapterQuadrinhos: AdapterQuadrinhos
     lateinit var gridLayoutManager: GridLayoutManager
     private var offset = 0
+    var lastFirstVisiblePosition by Delegates.notNull<Int>()
 
     private val viewModel by activityViewModels<MainViewModel>{
         object : ViewModelProvider.Factory{
@@ -57,19 +60,19 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
         // Inflate the layout for this fragment
         val view = inflater!!.inflate(R.layout.fragment_quadrinhos, container, false)
 
-        when(offset == viewModel.listResults.value!!.data.offset){
-            false -> viewModel.popListQuadrinhos(offset)
-        }
-        viewModel.listResults.observe(viewLifecycleOwner, {
-            adapterQuadrinhos.addList(it.data.results)
+
+        viewModel.listQuadrinho.observe(viewLifecycleOwner, {
+            adapterQuadrinhos.addList(it)
         })
 
         adapterQuadrinhos = AdapterQuadrinhos(this)
         gridLayoutManager = GridLayoutManager(view.context, 3)
+        lastFirstVisiblePosition = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
+        gridLayoutManager.scrollToPosition(lastFirstVisiblePosition)
         view.rvQuadrinhos.adapter = adapterQuadrinhos
         view.rvQuadrinhos.layoutManager = gridLayoutManager
         view.rvQuadrinhos.hasFixedSize()
-
+        setScroller(view)
 
         return view
     }
@@ -78,6 +81,24 @@ class QuadrinhosFragment : Fragment(), AdapterQuadrinhos.OnClickQuadrinhoListene
         viewModel.updatePositionQuadDetail(position)
         findNavController().navigate(R.id.action_quadrinhosFragment_to_detailQuadrinhoFragment)
     }
+
+    fun setScroller(view: View){
+        view.rvQuadrinhos.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if(dy > 0){
+                    val litem = gridLayoutManager.itemCount
+                    val vItem  = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
+                    val itens = adapterQuadrinhos.itemCount
+                    if(litem + vItem >= itens && offset < 20){
+                        viewModel.popListQuadrinhos(++offset)
+                    }
+                }
+            }
+        })
+    }
+
+
 
 
 }

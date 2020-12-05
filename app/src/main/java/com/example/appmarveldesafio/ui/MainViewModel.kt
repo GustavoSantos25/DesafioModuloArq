@@ -18,6 +18,11 @@ class MainViewModel(repository: Repository) : ViewModel() {
 
     val listResults = MutableLiveData<Res>()
     val quadDetail = MutableLiveData<Quadrinho>()
+    val listQuadrinho = MutableLiveData<ArrayList<Quadrinho>>()
+
+    init {
+        listQuadrinho.value = ArrayList()
+    }
 
 
     fun popListQuadrinhos(offset: Int) {
@@ -47,6 +52,7 @@ class MainViewModel(repository: Repository) : ViewModel() {
                         }
                     }
                 }
+                listQuadrinho.value!!.addAll(listResults.value!!.data.results)
             }
         }catch (e : Exception){
             Log.i("MainViewModel", e.toString())
@@ -55,7 +61,7 @@ class MainViewModel(repository: Repository) : ViewModel() {
 
     fun updatePositionQuadDetail(position: Int){
         viewModelScope.launch {
-            quadDetail.value = listResults.value?.data!!.results[position]
+            quadDetail.value = listQuadrinho.value!![position]
         }
     }
 
